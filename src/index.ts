@@ -1,0 +1,52 @@
+import { Client, Events, GatewayIntentBits, InteractionType } from "discord.js";
+import { loadConfig } from "./config/config.js";
+import { loadEnv } from "./config/env.js";
+import { handleGameCommand } from "./commands/game.js";
+import { canUseModerationCommands } from "./discord/permissions.js";
+import { actionEmbed } from "./discord/embeds.js";
+import { sendLog } from "./discord/logging.js";
+import { RobloxClient } from "./roblox/robloxClient.js";
+
+const env = loadEnv();
+const config = loadConfig();
+const roblox = new RobloxClient({
+  apiKey: env.ROBLOX_OPEN_CLOUD_API_KEY,
+  universeId: env.ROBLOX_UNIVERSE_ID
+});
+
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds]
+});
+
+client.once(Events.ClientReady, (readyClient) => {
+  console.log(`Logged in as ${readyClient.user.tag}`);
+});
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.type !== InteractionType.ApplicationCommand || !interaction.isChatInputCommand()) {
+    return;
+  }
+
+  if (interaction.commandName !== "game") {
+    return;
+  }
+
+  if (!canUseModerationCommands(interaction, config)) {
+    await interaction.reply({
+      ephemeral: true,
+      embeds: [
+        actionEmbed({
+          config,
+          title: "Permission Denied",
+          description: "You need a whitelisted role, a whitelisted user ID, or Administrator permission to use this command."
+        })
+      ]
+    });
+    await sendLog(client, config, "Permission Denied", `${interaction.user.tag} tried to run /game without permission.`);
+    return;
+  }
+
+  await handleGameCommand(interaction, { config, roblox });
+});
+
+await client.login(env.DISCORD_TOKEN);

@@ -1,0 +1,34 @@
+{
+  "name": "roblox-discord-moderation-bot",
+  "version": "1.0.0",
+  "description": "A TypeScript Discord slash-command moderation bot for Roblox Open Cloud.",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "register": "tsx src/registerCommands.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run tests"
+  },
+  "keywords": [
+    "discord",
+    "roblox",
+    "moderation",
+    "open-cloud"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.5.0",
+    "zod": "^3.25.30"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.24",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.8"
+  }
+}

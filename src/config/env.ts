@@ -1,0 +1,16 @@
+import "dotenv/config";
+import { z } from "zod";
+
+const envSchema = z.object({
+  DISCORD_TOKEN: z.string().min(1),
+  DISCORD_CLIENT_ID: z.string().min(1),
+  DISCORD_GUILD_ID: z.string().min(1),
+  ROBLOX_OPEN_CLOUD_API_KEY: z.string().min(1),
+  ROBLOX_UNIVERSE_ID: z.string().regex(/^\d+$/, "ROBLOX_UNIVERSE_ID must be numeric")
+});
+
+export type Env = z.infer<typeof envSchema>;
+
+export function loadEnv(env: NodeJS.ProcessEnv = process.env): Env {
+  return envSchema.parse(env);
+}
