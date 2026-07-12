@@ -4,6 +4,7 @@ import type { ListRestrictionsResponse, RobloxUser } from "./types.js";
 
 type RobloxClientOptions = {
   apiKey: string;
+  messagingSharedSecret: string;
   universeId: string;
   fetchImpl?: typeof fetch;
 };
@@ -35,11 +36,13 @@ export class RobloxApiError extends Error {
 
 export class RobloxClient {
   private readonly apiKey: string;
+  private readonly messagingSharedSecret: string;
   private readonly universeId: string;
   private readonly fetchImpl: typeof fetch;
 
   constructor(options: RobloxClientOptions) {
     this.apiKey = options.apiKey;
+    this.messagingSharedSecret = options.messagingSharedSecret;
     this.universeId = options.universeId;
     this.fetchImpl = options.fetchImpl ?? fetch;
   }
@@ -109,7 +112,8 @@ export class RobloxClient {
           reason: options.reason,
           moderatorDiscordId: options.moderatorDiscordId,
           requestId,
-          issuedAt: new Date().toISOString()
+          issuedAt: new Date().toISOString(),
+          sharedSecret: this.messagingSharedSecret
         })
       }
     );

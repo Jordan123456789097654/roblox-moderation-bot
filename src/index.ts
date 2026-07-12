@@ -11,6 +11,7 @@ const env = loadEnv();
 const config = loadConfig();
 const roblox = new RobloxClient({
   apiKey: env.ROBLOX_OPEN_CLOUD_API_KEY,
+  messagingSharedSecret: env.ROBLOX_MESSAGING_SHARED_SECRET,
   universeId: env.ROBLOX_UNIVERSE_ID
 });
 

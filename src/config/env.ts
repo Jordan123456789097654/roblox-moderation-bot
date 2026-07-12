@@ -6,6 +6,7 @@ const envSchema = z.object({
   DISCORD_CLIENT_ID: z.string().min(1),
   DISCORD_GUILD_ID: z.string().min(1),
   ROBLOX_OPEN_CLOUD_API_KEY: z.string().min(1),
+  ROBLOX_MESSAGING_SHARED_SECRET: z.string().min(32, "ROBLOX_MESSAGING_SHARED_SECRET must be at least 32 characters"),
   ROBLOX_UNIVERSE_ID: z.string().regex(/^\d+$/, "ROBLOX_UNIVERSE_ID must be numeric")
 });
 

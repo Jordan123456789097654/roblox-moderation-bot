@@ -14,7 +14,7 @@ describe("RobloxClient", () => {
   it("resolves usernames with the Roblox users API", async () => {
     const fetchMock = vi.fn(async () => jsonResponse({ data: [{ id: 1, name: "Builderman" }] }));
     const fetchImpl = fetchMock as unknown as typeof fetch;
-    const client = new RobloxClient({ apiKey: "key", universeId: "123", fetchImpl });
+    const client = new RobloxClient({ apiKey: "key", messagingSharedSecret: "a".repeat(32), universeId: "123", fetchImpl });
 
     await expect(client.resolveUser("Builderman")).resolves.toMatchObject({ id: 1, name: "Builderman" });
     expect(fetchMock).toHaveBeenCalledWith("https://users.roblox.com/v1/usernames/users", expect.objectContaining({ method: "POST" }));
@@ -23,7 +23,7 @@ describe("RobloxClient", () => {
   it("publishes kick messages to Open Cloud", async () => {
     const fetchMock = vi.fn(async () => jsonResponse({}));
     const fetchImpl = fetchMock as unknown as typeof fetch;
-    const client = new RobloxClient({ apiKey: "key", universeId: "123", fetchImpl });
+    const client = new RobloxClient({ apiKey: "key", messagingSharedSecret: "a".repeat(32), universeId: "123", fetchImpl });
 
     await client.publishKick({
       topic: "DiscordModeration",
@@ -44,7 +44,8 @@ describe("RobloxClient", () => {
       version: 1,
       action: "kick",
       userId: 1,
-      moderatorDiscordId: "999"
+      moderatorDiscordId: "999",
+      sharedSecret: "a".repeat(32)
     });
     expect(message.requestId).toMatch(/^[0-9a-f-]{36}$/);
     expect(message.issuedAt).toEqual(expect.any(String));
@@ -53,7 +54,7 @@ describe("RobloxClient", () => {
   it("maps banalts true to excludeAltAccounts false", async () => {
     const fetchMock = vi.fn(async () => jsonResponse({}));
     const fetchImpl = fetchMock as unknown as typeof fetch;
-    const client = new RobloxClient({ apiKey: "key", universeId: "123", fetchImpl });
+    const client = new RobloxClient({ apiKey: "key", messagingSharedSecret: "a".repeat(32), universeId: "123", fetchImpl });
 
     await client.banUser({
       userId: 1,
@@ -76,7 +77,7 @@ describe("RobloxClient", () => {
   it("omits duration for permanent bans", async () => {
     const fetchMock = vi.fn(async () => jsonResponse({}));
     const fetchImpl = fetchMock as unknown as typeof fetch;
-    const client = new RobloxClient({ apiKey: "key", universeId: "123", fetchImpl });
+    const client = new RobloxClient({ apiKey: "key", messagingSharedSecret: "a".repeat(32), universeId: "123", fetchImpl });
 
     await client.banUser({
       userId: 1,
