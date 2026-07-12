@@ -3,8 +3,14 @@ local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 
 local TOPIC = "DiscordModeration"
+-- Set this to the same 32+ character value as ROBLOX_MESSAGING_SHARED_SECRET.
+local MODERATION_SHARED_SECRET = "REPLACE_WITH_A_RANDOM_32_CHARACTER_MINIMUM_SECRET"
 local MAX_MESSAGE_AGE_SECONDS = 90
 local processedRequestIds = {}
+
+if #MODERATION_SHARED_SECRET < 32 or string.find(MODERATION_SHARED_SECRET, "REPLACE_WITH") then
+	error("[DiscordModeration] Configure MODERATION_SHARED_SECRET before enabling moderation messaging")
+end
 
 local function cleanProcessedRequestIds(now)
 	for requestId, expiresAt in pairs(processedRequestIds) do
@@ -46,6 +52,11 @@ local function handleMessage(message)
 	end
 
 	if payload.version ~= 1 or payload.action ~= "kick" then
+		return
+	end
+
+	if typeof(payload.sharedSecret) ~= "string" or payload.sharedSecret ~= MODERATION_SHARED_SECRET then
+		warn("[DiscordModeration] Ignored unauthenticated moderation payload")
 		return
 	end
 
