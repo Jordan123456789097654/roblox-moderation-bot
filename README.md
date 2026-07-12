@@ -35,6 +35,8 @@ TypeScript Discord slash-command bot for Roblox moderation through Open Cloud.
 
 6. Put `RobloxScript/ModerationMessaging.server.lua` in `ServerScriptService` and make sure its `TOPIC` matches `config.json`.
 
+   The script accepts only version 1 kick messages, discards messages older than 90 seconds, and ignores duplicate request IDs for 90 seconds. Keep the MessagingService publish permission on a dedicated, least-privileged API key.
+
 ## Commands
 
 - `/game kick username reason`
@@ -54,6 +56,13 @@ Your API key needs permissions for:
 - User restrictions read/write
 - Universe restart
 - User lookup if using Open Cloud user lookup
+
+## Security notes
+
+- The bot only accepts `/game` interactions from `DISCORD_GUILD_ID`, even if it is installed elsewhere.
+- Restrict `logsChannelId` to trusted staff: moderation targets and action outcomes are posted there.
+- Do not share the Roblox API key. It can publish moderation messages and change user restrictions for the configured universe.
+- Keep the Roblox script's `TOPIC` and `config.json` synchronized. A unique topic name is recommended to prevent accidental cross-feature messages.
 
 ## Love this?
 
