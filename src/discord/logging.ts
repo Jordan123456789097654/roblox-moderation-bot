@@ -22,6 +22,7 @@ export async function sendLog(
   }
 
   await channel.send({
+    allowedMentions: { parse: [] },
     embeds: [
       actionEmbed({
         config,
