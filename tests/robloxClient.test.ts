@@ -36,6 +36,18 @@ describe("RobloxClient", () => {
       "https://apis.roblox.com/cloud/v2/universes/123:publishMessage",
       expect.objectContaining({ method: "POST" })
     );
+
+    const [, request] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    const payload = JSON.parse(String(request.body));
+    const message = JSON.parse(payload.message);
+    expect(message).toMatchObject({
+      version: 1,
+      action: "kick",
+      userId: 1,
+      moderatorDiscordId: "999"
+    });
+    expect(message.requestId).toMatch(/^[0-9a-f-]{36}$/);
+    expect(message.issuedAt).toEqual(expect.any(String));
   });
 
   it("maps banalts true to excludeAltAccounts false", async () => {

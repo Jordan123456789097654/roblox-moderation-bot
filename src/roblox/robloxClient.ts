@@ -102,12 +102,14 @@ export class RobloxClient {
       {
         topic: options.topic,
         message: JSON.stringify({
+          version: 1,
           action: "kick",
           userId: options.user.id,
           username: options.user.name,
           reason: options.reason,
           moderatorDiscordId: options.moderatorDiscordId,
-          requestId
+          requestId,
+          issuedAt: new Date().toISOString()
         })
       }
     );
