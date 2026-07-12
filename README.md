@@ -54,3 +54,7 @@ Your API key needs permissions for:
 - User restrictions read/write
 - Universe restart
 - User lookup if using Open Cloud user lookup
+
+## Love this?
+
+- Consider giving it a star for support! 
