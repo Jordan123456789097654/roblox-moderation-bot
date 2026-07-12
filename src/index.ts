@@ -2,7 +2,7 @@ import { Client, Events, GatewayIntentBits, InteractionType } from "discord.js";
 import { loadConfig } from "./config/config.js";
 import { loadEnv } from "./config/env.js";
 import { handleGameCommand } from "./commands/game.js";
-import { canUseModerationCommands } from "./discord/permissions.js";
+import { canUseModerationCommands, isConfiguredGuild } from "./discord/permissions.js";
 import { actionEmbed } from "./discord/embeds.js";
 import { sendLog } from "./discord/logging.js";
 import { RobloxClient } from "./roblox/robloxClient.js";
@@ -28,6 +28,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   if (interaction.commandName !== "game") {
+    return;
+  }
+
+  if (!isConfiguredGuild(interaction.guildId, env.DISCORD_GUILD_ID)) {
+    await interaction.reply({
+      ephemeral: true,
+      content: "This command is only available in the configured moderation server."
+    });
     return;
   }
 

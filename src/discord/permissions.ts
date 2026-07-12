@@ -23,6 +23,10 @@ export function canUseModerationCommands(
   return config.whitelistedRoles.some((roleId) => guildMember.roles.cache.has(roleId));
 }
 
+export function isConfiguredGuild(guildId: string | null, configuredGuildId: string): boolean {
+  return guildId === configuredGuildId;
+}
+
 export function isProtectedRobloxUser(userId: number, protectedUsers: string[]): boolean {
   return protectedUsers.includes(String(userId));
 }

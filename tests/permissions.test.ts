@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PermissionsBitField } from "discord.js";
-import { canUseModerationCommands, isProtectedRobloxUser } from "../src/discord/permissions.js";
+import { canUseModerationCommands, isConfiguredGuild, isProtectedRobloxUser } from "../src/discord/permissions.js";
 
 const config = {
   whitelistedRoles: ["role-1"],
@@ -35,5 +35,11 @@ describe("permissions", () => {
   it("protects Roblox users", () => {
     expect(isProtectedRobloxUser(123, ["123"])).toBe(true);
     expect(isProtectedRobloxUser(456, ["123"])).toBe(false);
+  });
+
+  it("only accepts the configured guild", () => {
+    expect(isConfiguredGuild("guild-1", "guild-1")).toBe(true);
+    expect(isConfiguredGuild("guild-2", "guild-1")).toBe(false);
+    expect(isConfiguredGuild(null, "guild-1")).toBe(false);
   });
 });
