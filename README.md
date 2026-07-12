@@ -10,7 +10,7 @@ TypeScript Discord slash-command bot for Roblox moderation through Open Cloud.
    npm install
    ```
 
-2. Copy `.env.example` to `.env` and fill in your Discord and Roblox values.
+2. Copy `.env.example` to `.env` and fill in your Discord and Roblox values. Generate a unique `ROBLOX_MESSAGING_SHARED_SECRET` with at least 32 characters; it is required for kick messages.
 
 3. Edit `config.json`:
 
@@ -33,7 +33,7 @@ TypeScript Discord slash-command bot for Roblox moderation through Open Cloud.
    npm run dev
    ```
 
-6. Put `RobloxScript/ModerationMessaging.server.lua` in `ServerScriptService` and make sure its `TOPIC` matches `config.json`.
+6. Put `RobloxScript/ModerationMessaging.server.lua` in `ServerScriptService`, then set its `TOPIC` and `MODERATION_SHARED_SECRET` to the same values as `config.json` and `.env` respectively.
 
    The script accepts only version 1 kick messages, discards messages older than 90 seconds, and ignores duplicate request IDs for 90 seconds. Keep the MessagingService publish permission on a dedicated, least-privileged API key.
 
@@ -63,6 +63,7 @@ Your API key needs permissions for:
 - Restrict `logsChannelId` to trusted staff: moderation targets and action outcomes are posted there.
 - Do not share the Roblox API key. It can publish moderation messages and change user restrictions for the configured universe.
 - Keep the Roblox script's `TOPIC` and `config.json` synchronized. A unique topic name is recommended to prevent accidental cross-feature messages.
+- Keep `ROBLOX_MESSAGING_SHARED_SECRET` out of Git and set the identical value in the Roblox server script. The listener fails closed until it is configured.
 
 ## Love this?
 
