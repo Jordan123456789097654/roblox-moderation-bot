@@ -1,7 +1,7 @@
 {
   "name": "roblox-discord-moderation-bot",
   "version": "1.0.0",
-  "description": "A TypeScript Discord slash-command moderation bot for Roblox Open Cloud.",
+  "description": "Secure Discord moderation commands for Roblox experiences through Open Cloud.",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
@@ -19,8 +19,20 @@
     "moderation",
     "open-cloud"
   ],
-  "author": "",
+  "author": "Focalorrr",
   "license": "MIT",
+  "homepage": "https://github.com/focalorrr/roblox-moderation-bot#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/focalorrr/roblox-moderation-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/focalorrr/roblox-moderation-bot/issues"
+  },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
   "dependencies": {
     "discord.js": "^14.19.3",
     "dotenv": "^16.5.0",
