@@ -19,6 +19,20 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
+let shuttingDown = false;
+const shutdown = (signal: NodeJS.Signals): void => {
+  if (shuttingDown) {
+    return;
+  }
+
+  shuttingDown = true;
+  console.log(`Received ${signal}; disconnecting from Discord.`);
+  client.destroy();
+};
+
+process.once("SIGINT", shutdown);
+process.once("SIGTERM", shutdown);
+
 client.once(Events.ClientReady, (readyClient) => {
   console.log(`Logged in as ${readyClient.user.tag}`);
 });
